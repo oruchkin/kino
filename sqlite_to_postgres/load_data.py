@@ -4,7 +4,6 @@ from contextlib import contextmanager
 import psycopg2
 from psycopg2.extensions import connection as _connection
 from psycopg2.extras import RealDictCursor
-#from mover import open_slite_db
 from dataclass import Film_work, Genre, Genre_Film_Work, Person, Person_Film_Work
 
 
