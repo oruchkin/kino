@@ -1,9 +1,10 @@
-import unittest
 import sqlite3
+import unittest
 from xmlrpc.client import Boolean
+
 import psycopg2
-from psycopg2.extras import DictCursor
 from dateutil.parser import parse
+from psycopg2.extras import DictCursor
 
 
 def connect_to_sqlite() -> sqlite3.Connection:
