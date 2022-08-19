@@ -17,10 +17,10 @@ def connect_to_sqlite() -> sqlite3.Connection:
 def connect_to_postgresql() -> psycopg2.extensions.connection:
     """Подключение к базе PostgreSql"""
     dsl = {'dbname': 'movies_db', 
-        'user': 'app', 
-        'password': '123qwe', 
-        'host': '127.0.0.1', 
-        'port': 5432}
+           'user': 'app', 
+           'password': '123qwe', 
+           'host': '127.0.0.1',
+           'port': 5432 }
     with psycopg2.connect(**dsl, cursor_factory=DictCursor) as pg_conn:
         return pg_conn
     
@@ -83,11 +83,11 @@ class Test_adding(unittest.TestCase):
         """ Устанавливаем соеденение с базами данных, получаем курсор. """
         self.sqlite_cursor = connect_to_sqlite()
         self.pg_cursor = connect_to_postgresql().cursor()
-        
+
     def tearDown(self):
         self.sqlite_cursor.close()
         self.pg_cursor.close()
-        
+
     def table_data(self, table):
         """ Функция для основной проверки всех таблиц. """
         # достаем данные sqlite
@@ -103,62 +103,62 @@ class Test_adding(unittest.TestCase):
         # проверка реального содержимого таблиц (рядов)
         compare_result = compare_data_in_table(sqlite_data,pg_data, sqlite_columns)
         self.assertEqual(compare_result, True)
-        
-        
+
+
     def test_film_work_count(self):
         """ Проверяем кол-во на одинаковое кол-во фильмов в table film_work. """
         data = count_raw_in_table('film_work', self.sqlite_cursor, self.pg_cursor)
         self.assertEqual(data['sqlite_count'], data['pg_count'])
-        
+
     def test_genre_count(self):
         """ Проверяем кол-во на одинаковое кол-во фильмов в table genre. """
         data = count_raw_in_table('genre', self.sqlite_cursor, self.pg_cursor)
         self.assertEqual(data['sqlite_count'], data['pg_count'])
-        
+
     def test_genre_film_workcount(self):
         """ Проверяем кол-во на одинаковое кол-во фильмов в table genre_film_work. """
         data = count_raw_in_table('genre_film_work', self.sqlite_cursor, self.pg_cursor)
         self.assertEqual(data['sqlite_count'], data['pg_count'])
-        
+
     def test_person_count(self):
         """ Проверяем кол-во на одинаковое кол-во фильмов в table person. """
         data = count_raw_in_table('person', self.sqlite_cursor, self.pg_cursor)
         self.assertEqual(data['sqlite_count'], data['pg_count'])
-        
+
     def test_person_film_workcount(self):
         """ Проверяем кол-во на одинаковое кол-во фильмов в table person_film_work. """
         data = count_raw_in_table('person_film_work', self.sqlite_cursor, self.pg_cursor)
         self.assertEqual(data['sqlite_count'], data['pg_count'])
-        
-        
+
+
     def test_table_filmwork(self):
         """ Проверка целостности данных таблицы film_work. """
         table = "film_work"
         self.table_data(table)
-        
+
     def test_table_genre(self):
         """ Проверка целостности данных таблицы genre. """
         table = "genre"
         self.table_data(table)
-        
+
     def test_table_genre_film_work(self):
         """ Проверка целостности данных таблицы genre_film_work. """
         table = "genre_film_work"
         self.table_data(table)
-        
+
     def test_table_person(self):
         """ Проверка целостности данных таблицы person. """
         table = "person"
         self.table_data(table)
-        
+
     def test_table_person_film_work(self):
         """ Проверка целостности данных таблицы person_film_work. """
         table = "person_film_work"
         self.table_data(table)
-            
-        
+
+
 def main():
     unittest.main()
-        
+
 if __name__ == '__main__':
     main()
