@@ -39,11 +39,9 @@ def get_columns_list_from_table(data: dict, db_name: str) -> dict:
     sqlite_columns = []
     postgres_columns = []
     if db_name == "sqlite":
-        for i in data:
-            sqlite_columns.append(i)
+        sqlite_columns = [i for i in data]
     elif db_name == "postgresql":
-        for i in data:
-            postgres_columns.append(i)
+        postgres_columns = [i for i in data]
     return {"sqlite_columns":sqlite_columns, "postgres_columns":postgres_columns}
 
 
@@ -54,19 +52,19 @@ def compare_columns_in_table(postgres_columns:list, sqlite_columns:list) -> Bool
     return (postgres_columns == sqlite_columns)
 
 
-def sort_dict(incoming_dict,columns) -> dict:
+def sort_dict(incoming_dict:dict, columns:list) -> dict:
     """ Сортируем словарь для сравнения. """
     sorted_dict = {}
     for i in columns:
         try:
-            # привод к одному формату времени если это поле времени
+            # привод к одинаковому формату времени если это поле времени
             sorted_dict[i] = parse(str(incoming_dict[i]))
         except:
             sorted_dict[i] = incoming_dict[i]
     return sorted_dict
 
 
-def compare_data_in_table(sqlite_data,pg_data, columns) -> Boolean:
+def compare_data_in_table(sqlite_data:list, pg_data: list, columns:list) -> Boolean:
     """ Проверка содержимого таблиц разных баз данных. """
     counter = 0
     state = False
